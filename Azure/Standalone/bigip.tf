@@ -86,11 +86,11 @@ module "bigip" {
   internal_securitygroup_ids = [data.azurerm_network_security_group.internal.id]
   availability_zone          = var.availability_zone
   custom_user_data           = local.f5_onboard1
-  sleep_time                 = "60s"
+  sleep_time                 = "30s"
   tags                       = local.tags
   az_keyvault_authentication = var.az_keyvault_authentication
   azure_secret_rg            = var.az_keyvault_authentication ? var.keyvault_rg : ""
   azure_keyvault_name        = var.az_keyvault_authentication ? var.keyvault_name : ""
   azure_keyvault_secret_name = var.az_keyvault_authentication ? var.keyvault_secret : ""
-  user_identity              = var.az_keyvault_authentication ? data.azurerm_user_assigned_identity.main[0].id : null  
+  user_identity              = var.az_keyvault_authentication ? data.azurerm_user_assigned_identity.main[0].id : null
 }
