@@ -162,7 +162,6 @@ variable "INIT_URL" {
 }
 variable "libs_dir" {
   type        = string
-  default     = "/config/cloud/azure/node_modules"
   description = "Directory on the BIG-IP to download the A&O Toolchain into"
 }
 variable "bigIqHost" {

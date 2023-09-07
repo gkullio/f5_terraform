@@ -40,6 +40,7 @@ if ${az_keyvault_authentication}; then
       vaultUrl: ${vault_url}
       secretId: ${keyvault_secret}
 EOF
+
 else
    cat << 'EOF' >> /config/cloud/runtime-init-conf.yaml
   - name: ADMIN_PASS

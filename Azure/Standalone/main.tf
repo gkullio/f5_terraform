@@ -47,30 +47,30 @@ data "azurerm_subscription" "main" {
 #       user-supplied managed identity.
 
 # Managed Identity Info
-data "azurerm_user_assigned_identity" "main" {
-  count               = var.az_keyvault_authentication ? 1 : 0
-  name                = split("/", var.user_identity)[8]
-  resource_group_name = split("/", var.user_identity)[4]
-}
+#data "azurerm_user_assigned_identity" "main" {
+#  count               = var.az_keyvault_authentication ? 1 : 0
+#  name                = split("/", var.user_identity)[8]
+#  resource_group_name = split("/", var.user_identity)[4]
+#}
 
 # Key Vault info
-data "azurerm_key_vault" "main" {
-  count               = var.az_keyvault_authentication ? 1 : 0
-  name                = var.keyvault_name
-  resource_group_name = var.keyvault_rg
-}
+#data "azurerm_key_vault" "main" {
+#  count               = var.az_keyvault_authentication ? 1 : 0
+#  name                = var.keyvault_name
+#  resource_group_name = var.keyvault_rg
+#}
 
 # Create Key Vault policies
-resource "azurerm_key_vault_access_policy" "main" {
-  count        = var.az_keyvault_authentication ? 1 : 0
-  key_vault_id = data.azurerm_key_vault.main[0].id
-  tenant_id    = data.azurerm_subscription.main.tenant_id
-  object_id    = data.azurerm_user_assigned_identity.main[0].principal_id
+#resource "azurerm_key_vault_access_policy" "main" {
+#  count        = var.az_keyvault_authentication ? 1 : 0
+#  key_vault_id = data.azurerm_key_vault.main[0].id
+#  tenant_id    = data.azurerm_subscription.main.tenant_id
+#  object_id    = data.azurerm_user_assigned_identity.main[0].principal_id
 
-  key_permissions = [
-    "Get", "List", "Update", "Create", "Import", "Delete", "Recover", "Backup", "Restore",
-  ]
-  secret_permissions = [
-    "Get", "List", "Set", "Delete", "Recover", "Restore", "Backup", "Purge",
-  ]
-}
+#  key_permissions = [
+#    "Get", "List", "Update", "Create", "Import", "Delete", "Recover", "Backup", "Restore",
+#  ]
+#  secret_permissions = [
+#    "Get", "List", "Set", "Delete", "Recover", "Restore", "Backup", "Purge",
+#  ]
+#}
