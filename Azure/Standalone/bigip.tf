@@ -31,7 +31,10 @@ locals {
   f5_onboard1 = templatefile("${path.module}/f5_onboard.tmpl", {
     regKey                     = var.license1
     f5_username                = var.f5_username
-    f5_password                = var.f5_password
+    f5_password                = var.az_keyvault_authentication ? "" : var.f5_password
+    az_keyvault_authentication = var.az_keyvault_authentication
+    vault_url                  = var.az_keyvault_authentication ? data.azurerm_key_vault.main[0].vault_uri : ""
+    keyvault_secret            = var.az_keyvault_authentication ? var.keyvault_secret : ""
     ssh_keypair                = file(var.ssh_key)
     INIT_URL                   = var.INIT_URL
     DO_URL                     = var.DO_URL
@@ -85,4 +88,9 @@ module "bigip" {
   custom_user_data           = local.f5_onboard1
   sleep_time                 = "60s"
   tags                       = local.tags
+  az_keyvault_authentication = var.az_keyvault_authentication
+  azure_secret_rg            = var.az_keyvault_authentication ? var.keyvault_rg : ""
+  azure_keyvault_name        = var.az_keyvault_authentication ? var.keyvault_name : ""
+  azure_keyvault_secret_name = var.az_keyvault_authentication ? var.keyvault_secret : ""
+  user_identity              = var.az_keyvault_authentication ? data.azurerm_user_assigned_identity.main[0].id : null  
 }
