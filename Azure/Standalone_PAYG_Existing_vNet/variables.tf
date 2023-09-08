@@ -118,11 +118,6 @@ variable "ssh_key" {
   type        = string
   description = "public key used for authentication in /path/file format (e.g. /.ssh/id_rsa.pub)"
 }
-variable "license1" {
-  type        = string
-  default     = ""
-  description = "The license token for the 1st F5 BIG-IP VE (BYOL)"
-}
 variable "dns_server" {
   type        = string
   description = "Leave the default DNS server the BIG-IP uses, or replace the default DNS server with the one you want to use"
