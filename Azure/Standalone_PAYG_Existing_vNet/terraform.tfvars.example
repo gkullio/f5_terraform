@@ -1,4 +1,7 @@
-#Fill out all necessary variables for your environment
+#This is the examples for the terraform.tfvars file
+#In order to use this file, you must rename it to terraform.tfvars
+#All variables should be filled out appropriately for your environment
+
 
 # BIG-IP Environment
 f5_username         = "azureuser"
