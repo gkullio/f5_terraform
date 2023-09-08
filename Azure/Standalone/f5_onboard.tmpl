@@ -160,11 +160,7 @@ extension_services:
             shell: bash
             userType: regular
             keys:
-              - '{{{ SSH_KEYS }}}'
-          myLicense:
-            class: License
-            licenseType: regKey
-            regKey: '${regKey}'              
+              - '{{{ SSH_KEYS }}}'           
           myDns:
             class: DNS
             nameServers:
@@ -224,15 +220,15 @@ extension_services:
           schemaVersion: 3.0.0
           label: Sample 1
           remark: A HTTP sample application
-          Tenant_1:
+          Common:
             class: Tenant
-            A1:
+            Test:
               class: Application
               template: http
               serviceMain:
                 class: Service_HTTP
                 virtualAddresses:
-                  - '0.0.0.0/0'
+                  - '${secondaryIP}'
                 pool: web_pool
               web_pool:
                 class: Pool

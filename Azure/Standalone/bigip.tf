@@ -60,6 +60,7 @@ locals {
     bigIqSkuKeyword2           = var.bigIqSkuKeyword2
     bigIqUnitOfMeasure         = var.bigIqUnitOfMeasure
     bigIqHypervisor            = var.bigIqHypervisor
+    secondaryIP                = local.vm01_vip_ips.app1.ip
   })
 }
 
