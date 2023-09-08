@@ -20,6 +20,8 @@ variable "location" {
 variable "adminSrcAddr" {
   type        = string
   description = "Allowed Admin source IP prefix"
+  #Recommend using icanhazip.com to get your public IP address
+  #Recommend against 0.0.0.0/0 for security reasons  
 }
 variable "vnet_cidr" {
   type        = string

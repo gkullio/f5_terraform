@@ -1,0 +1,29 @@
+# Azure Environment
+location        = "westus2"
+resourceOwner   = ""
+projectPrefix   = ""
+
+########################################################################################################################
+
+# main.tf Azure Service Principal Information
+# --Retreive from Azure Portal or CLI--
+# --Recommend using the Contributor role for the Service Principal--
+# CLI Example: az ad sp create-for-rbac --name <name> --role Contributor --scopes /subscriptions/<your Azure subscription ID>
+
+client_id       = ""
+client_secret   = ""
+tenant_id       = ""
+subscription_id = ""
+
+########################################################################################################################
+
+# vNet information
+adminSrcAddr        = ""
+vnet_cidr           = ""
+mgmt_address_prefix = ""
+ext_address_prefix  = ""
+int_address_prefix  = ""
+
+########################################################################################################################
+
+
