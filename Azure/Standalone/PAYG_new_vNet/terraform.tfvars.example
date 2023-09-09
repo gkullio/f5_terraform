@@ -19,30 +19,20 @@ TS_URL              = "https://github.com/F5Networks/f5-telemetry-streaming/rele
 FAST_URL            = "https://github.com/F5Networks/f5-appsvcs-templates/releases/download/v1.24.0/f5-appsvcs-templates-1.24.0-1.noarch.rpm"
 INIT_URL            = "https://cdn.f5.com/product/cloudsolutions/f5-bigip-runtime-init/v1.6.0/dist/f5-bigip-runtime-init-1.6.0-1.gz.run"
 
+
 # BIG-IP Image Information
 # --Currently used PAYG image--
-product             = "f5-big-ip-byol"
-image_name          = "f5-big-all-2slot-byol"
+product             = "f5-big-ip-best"
+image_name          = "f5-big-best-plus-hourly-25mbps"
 bigip_version       = "16.1.303000"
 
+# new vNet information
+adminSrcAddr        = "65.61.116.107/32"
+vnet_cidr           = "10.245.0.0/16"
+mgmt_address_prefix = "10.245.1.0/24"
+ext_address_prefix  = "10.245.2.0/24"
+int_address_prefix  = "10.245.3.0/24"
 
-# Existing vNet information
-# Recommended to use a dedicated vNet for BIG-IP Networking
-# Please use the Infrastucture-only template to create the vNet and subnets
-vnet_rg             = ""
-vnet_name           = ""
-
-# Existing Network Security Groups for each subnet
-
-mgmtNsg             = ""
-extNsg              = ""
-intNsg              = ""
-
-# Existing Subnet names
-
-mgmtSubnet          = "mgmt"
-extSubnet           = "external"
-intSubnet           = "internal"
 
 # Azure Environment
 
