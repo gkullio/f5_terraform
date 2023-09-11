@@ -20,9 +20,10 @@
 
 ## Introduction
 
-This solution uses a Terraform template to launch a 3-NIC deployment of a cloud-focused BIG-IP VE standalone device in Microsoft Azure. Traffic flows to the BIG-IP VE which then processes the traffic to application servers. The BIG-IP VE instance is running with multiple interfaces: management, external, internal. NIC1 is associated with the external network.
+This solution uses a Terraform template to launch a 3-NIC deployment of a cloud-focused BIG-IP VE standalone device in Microsoft Azure. Traffic flows to the BIG-IP VE which then processes the traffic to application servers. In this case the application server is the public facing website of httpbin. This is to demonstrate the ability to load balance and protect public facing web applications. The BIG-IP VE instance is running with multiple interfaces: management, external, internal. NIC1 is associated with the external network.
 
-The BIG-IP VEs have the [Local Traffic Manager (LTM)](https://f5.com/products/big-ip/local-traffic-manager-ltm) module enabled to provide advanced traffic management functionality. In addition, the [Application Security Module (ASM)](https://www.f5.com/pdf/products/big-ip-application-security-manager-overview.pdf) can be enabled to provide F5's L4/L7 security features for web application firewall (WAF) and bot protection.
+The BIG-IP VEs have the [Local Traffic Manager (LTM)](https://f5.com/products/big-ip/local-traffic-manager-ltm) module enabled to provide advanced traffic management functionality. 
+In addition, the [Application Security Module (ASM)](https://www.f5.com/pdf/products/big-ip-application-security-manager-overview.pdf) is enabled to provide F5's L4/L7 security features for web application firewall (WAF) and bot protection.
 
 The BIG-IP's configuration, now defined in a single convenient YAML or JSON [F5 BIG-IP Runtime Init](https://github.com/F5Networks/f5-bigip-runtime-init) configuration file, leverages [F5 Automation Tool Chain](https://www.f5.com/pdf/products/automation-toolchain-overview.pdf) declarations which are easier to author, validate and maintain as code. For instance, if you need to change the configuration on the BIG-IPs in the deployment, you update the instance model by passing a new config file (which references the updated Automation Toolchain declarations) via template's runtimeConfig input parameter. New instances will be deployed with the updated configurations.
 
@@ -66,39 +67,34 @@ The BIG-IP's configuration, now defined in a single convenient YAML or JSON [F5 
   - f5_onboard.tmpl - onboarding script which is run by commandToExecute (user data). It will be copied to /var/lib/waagent/CustomData upon bootup. This script is responsible for downloading the neccessary F5 Automation Toolchain RPM files, installing them, and then executing the onboarding REST calls via the [BIG-IP Runtime Init tool](https://github.com/F5Networks/f5-bigip-runtime-init).
 
 ## BYOL Licensing
-This template uses PayGo BIG-IP image for the deployment (as default). If you would like to use BYOL licenses, then these following steps are needed:
-1. Find available images/versions with "byol" in SKU name using Azure CLI:
+This template uses PayGo BIG-IP image for the deployment (as default). If you would like to use BYOL licenses, please refer to the BYOL folders available in this same repository. 
+
+1. Find available images with "f5-big-best-plus-hourly-" in SKU name using Azure CLI:
   ```
-          az vm image list -f BIG-IP --all
+          az vm image list --offer BIG-IP --sku f5-big-best-plus-hourly- --all --query "sort_by([].{offer:offer, sku:sku, version:version}, &version)" --output table
 
           # example output...
 
-          {
-            "offer": "f5-big-ip-byol",
-            "publisher": "f5-networks",
-            "sku": "f5-big-ltm-2slot-byol",
-            "urn": "f5-networks:f5-big-ip-byol:f5-big-ltm-2slot-byol:16.1.301000",
-            "version": "16.1.301000"
-          },
+          Offer           Sku                                    Version
+          --------------  -------------------------------------  -----------
+          .
+          .
+          f5-big-ip-best  f5-big-best-plus-hourly-10gbps         16.1.303000
+          f5-big-ip-best  f5-big-best-plus-hourly-1gbps          16.1.303000
+          f5-big-ip-best  f5-big-best-plus-hourly-200mbps        16.1.303000
+          f5-big-ip-best  f5-big-best-plus-hourly-25mbps         16.1.303000
+          .
+          .
+
   ```
-2. In the "variables.tf", modify *image_name* and *product* with the SKU and offer from AZ CLI results
+2. In the "terraform.tfvars", modify *image_name* and *product* with the SKU and offer from AZ CLI results
   ```
           # BIGIP Image
-          variable product { default = "f5-big-ip-byol" }
-          variable image_name { default = "f5-big-ltm-2slot-byol" }
+          product             = "f5-big-ip-best"
+          image_name          = "f5-big-best-plus-hourly-25mbps"
+          bigip_version       = "16.1.303000"
   ```
-3. In the "variables.tf", modify *license1* with a valid regkey
-  ```
-          # BIGIP Setup
-          variable license1 { default = "" }
-  ```
-4. In the "f5_onboard.tmpl", add the "myLicense" block under the "Common" declaration ([example here](https://github.com/F5Networks/f5-azure-arm-templates-v2/blob/main/examples/quickstart/bigip-configurations/runtime-init-conf-3nic-byol.yaml))
-  ```
-          myLicense:
-            class: License
-            licenseType: regKey
-            regKey: '${regKey}'
-  ```
+
 
 ## BIG-IQ License Manager
 This template uses PayGo BIG-IP image for the deployment (as default). If you would like to use BYOL/ELA/Subscription licenses from [BIG-IQ License Manager (LM)](https://community.f5.com/t5/technical-articles/managing-big-ip-licensing-with-big-iq/ta-p/279797), then these following steps are needed:
@@ -174,15 +170,6 @@ This template uses PayGo BIG-IP image for the deployment (as default). If you wo
 | <a name="input_TS_URL"></a> [TS\_URL](#input\_TS\_URL) | URL to download the BIG-IP Telemetry Streaming module | `string` | `"https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.32.0/f5-telemetry-1.32.0-2.noarch.rpm"` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | Azure Availability Zone for BIG-IP 1 | `number` | `1` | no |
 | <a name="input_az_keyvault_authentication"></a> [az\_keyvault\_authentication](#input\_az\_keyvault\_authentication) | Whether to use key vault to pass authentication | `bool` | `false` | no |
-| <a name="input_bigIqHost"></a> [bigIqHost](#input\_bigIqHost) | This is the BIG-IQ License Manager host name or IP address | `string` | `""` | no |
-| <a name="input_bigIqHypervisor"></a> [bigIqHypervisor](#input\_bigIqHypervisor) | BIG-IQ hypervisor | `string` | `"azure"` | no |
-| <a name="input_bigIqLicensePool"></a> [bigIqLicensePool](#input\_bigIqLicensePool) | BIG-IQ license pool name | `string` | `""` | no |
-| <a name="input_bigIqLicenseType"></a> [bigIqLicenseType](#input\_bigIqLicenseType) | BIG-IQ license type | `string` | `"licensePool"` | no |
-| <a name="input_bigIqPassword"></a> [bigIqPassword](#input\_bigIqPassword) | Admin Password for BIG-IQ | `string` | `"Default12345!"` | no |
-| <a name="input_bigIqSkuKeyword1"></a> [bigIqSkuKeyword1](#input\_bigIqSkuKeyword1) | BIG-IQ license SKU keyword 1 | `string` | `"key1"` | no |
-| <a name="input_bigIqSkuKeyword2"></a> [bigIqSkuKeyword2](#input\_bigIqSkuKeyword2) | BIG-IQ license SKU keyword 2 | `string` | `"key2"` | no |
-| <a name="input_bigIqUnitOfMeasure"></a> [bigIqUnitOfMeasure](#input\_bigIqUnitOfMeasure) | BIG-IQ license unit of measure | `string` | `"hourly"` | no |
-| <a name="input_bigIqUsername"></a> [bigIqUsername](#input\_bigIqUsername) | Admin name for BIG-IQ | `string` | `"azureuser"` | no |
 | <a name="input_bigip_version"></a> [bigip\_version](#input\_bigip\_version) | BIG-IP Version | `string` | `"16.1.303000"` | no |
 | <a name="input_dns_server"></a> [dns\_server](#input\_dns\_server) | Leave the default DNS server the BIG-IP uses, or replace the default DNS server with the one you want to use | `string` | `"8.8.8.8"` | no |
 | <a name="input_dns_suffix"></a> [dns\_suffix](#input\_dns\_suffix) | DNS suffix for your domain in the GCP project | `string` | `"example.com"` | no |
@@ -198,7 +185,6 @@ This template uses PayGo BIG-IP image for the deployment (as default). If you wo
 | <a name="input_keyvault_rg"></a> [keyvault\_rg](#input\_keyvault\_rg) | The name of the resource group in which the Azure Key Vault exists | `string` | `""` | no |
 | <a name="input_keyvault_secret"></a> [keyvault\_secret](#input\_keyvault\_secret) | Name of Key Vault secret with BIG-IP password | `string` | `null` | no |
 | <a name="input_libs_dir"></a> [libs\_dir](#input\_libs\_dir) | Directory on the BIG-IP to download the A&O Toolchain into | `string` | `"/config/cloud/azure/node_modules"` | no |
-| <a name="input_license1"></a> [license1](#input\_license1) | The license token for the 1st F5 BIG-IP VE (BYOL) | `string` | `""` | no |
 | <a name="input_location"></a> [location](#input\_location) | Azure Location of the deployment | `string` | `"westus2"` | no |
 | <a name="input_mgmtNsg"></a> [mgmtNsg](#input\_mgmtNsg) | Name of management network security group | `string` | `null` | no |
 | <a name="input_mgmtSubnet"></a> [mgmtSubnet](#input\_mgmtSubnet) | Name of management subnet | `string` | `null` | no |
