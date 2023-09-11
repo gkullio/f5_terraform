@@ -200,5 +200,4 @@ variable "resourceOwner" {
 }
 variable "vm_name" {
   description = "Name of 1st BIG-IP. If empty, default is 'bigip1' string + prefix + random_id"
-  default     = ""
 }
