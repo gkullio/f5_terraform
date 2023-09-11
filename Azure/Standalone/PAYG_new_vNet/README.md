@@ -12,7 +12,6 @@
 - [Prerequisites](#prerequisites)
 - [Important Configuration Notes](#important-configuration-notes)
 - [BYOL Licensing](#byol-licensing)
-- [BIG-IQ License Manager](#big-iq-license-manager)
 - [Installation Example](#installation-example)
 - [Configuration Example](#configuration-example)
 - [Service Principal Authentication](#service-principal-authentication)
@@ -95,28 +94,6 @@ This template uses PayGo BIG-IP image for the deployment (as default). If you wo
           bigip_version       = "16.1.303000"
   ```
 
-
-## BIG-IQ License Manager
-This template uses PayGo BIG-IP image for the deployment (as default). If you would like to use BYOL/ELA/Subscription licenses from [BIG-IQ License Manager (LM)](https://community.f5.com/t5/technical-articles/managing-big-ip-licensing-with-big-iq/ta-p/279797), then these following steps are needed:
-1. Find BYOL image. Reference [BYOL Licensing](#byol-licensing) step #1.
-2. Replace BIG-IP *image_name* and *product* in "variables.tf". Reference [BYOL Licensing](#byol-licensing) step #2.
-3. In the "variables.tf", modify the BIG-IQ license section to match your environment
-4. In the "f5_onboard.tmpl", add the "myLicense" block under the "Common" declaration ([example here](https://github.com/F5Networks/f5-azure-arm-templates-v2/blob/main/examples/autoscale/bigip-configurations/runtime-init-conf-bigiq-with-app.yaml))
-  ```
-          myLicense:
-            class: License
-            licenseType: ${bigIqLicenseType}
-            bigIqHost: ${bigIqHost}
-            bigIqUsername: ${bigIqUsername}
-            bigIqPassword: ${bigIqPassword}
-            licensePool: ${bigIqLicensePool}
-            skuKeyword1: ${bigIqSkuKeyword1}
-            skuKeyword2: ${bigIqSkuKeyword2}
-            unitOfMeasure: ${bigIqUnitOfMeasure}
-            reachable: false
-            hypervisor: ${bigIqHypervisor}
-            overwrite: true
-  ```
 
 <!-- markdownlint-disable no-inline-html -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
