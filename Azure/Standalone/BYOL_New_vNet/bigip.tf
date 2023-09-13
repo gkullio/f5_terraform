@@ -80,11 +80,11 @@ module "bigip" {
   f5_username                = var.f5_username
   f5_ssh_publickey           = file(var.ssh_key)
   mgmt_subnet_ids            = [{ "subnet_id" = resource.azurerm_subnet.mgmt.id, "public_ip" = true, "private_ip_primary" = "" }]
-  mgmt_securitygroup_ids     = [data.azurerm_network_security_group.mgmt.id]
+  mgmt_securitygroup_ids     = [resource.azurerm_network_security_group.mgmt.id]
   external_subnet_ids        = [{ "subnet_id" = resource.azurerm_subnet.external.id, "public_ip" = true, "private_ip_primary" = "", "private_ip_secondary" = "" }]
-  external_securitygroup_ids = [data.azurerm_network_security_group.external.id]
+  external_securitygroup_ids = [resource.azurerm_network_security_group.external.id]
   internal_subnet_ids        = [{ "subnet_id" = resource.azurerm_subnet.internal.id, "public_ip" = false, "private_ip_primary" = "" }]
-  internal_securitygroup_ids = [data.azurerm_network_security_group.internal.id]
+  internal_securitygroup_ids = [resource.azurerm_network_security_group.internal.id]
   availability_zone          = var.availability_zone
   custom_user_data           = local.f5_onboard1
   sleep_time                 = "30s"

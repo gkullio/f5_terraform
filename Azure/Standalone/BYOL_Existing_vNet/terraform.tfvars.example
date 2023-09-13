@@ -19,13 +19,13 @@ FAST_URL            = "https://github.com/F5Networks/f5-appsvcs-templates/releas
 INIT_URL            = "https://cdn.f5.com/product/cloudsolutions/f5-bigip-runtime-init/v1.6.0/dist/f5-bigip-runtime-init-1.6.0-1.gz.run"
 
 # BIG-IP Image Information
-# --Currently used PAYG image--
+# --Currently used BYOL image--
 product             = "f5-big-ip-byol"
 image_name          = "f5-big-all-2slot-byol"
 bigip_version       = "16.1.303000"
 
 # BIG-IP License Information
-# --Retreive from Eval Key Generator--
+# --Retreive from Eval Key Generator or from F5 Account Team--
 license1            = "value"
 
 # Existing vNet information
@@ -35,38 +35,43 @@ vnet_rg             = ""
 vnet_name           = ""
 
 # Existing Network Security Groups for each subnet
+# --Match the NSG to the subnet name--
 
 mgmtNsg             = ""
 extNsg              = ""
 intNsg              = ""
 
 # Existing Subnet names
+# --Must match the subnet names in the vNet--
 
-mgmtSubnet          = "mgmt"
-extSubnet           = "external"
-intSubnet           = "internal"
+mgmtSubnet          = ""
+extSubnet           = ""
+intSubnet           = ""
 
 # Azure Environment
+location            = "westus2"
 
-location      = "westus2"
-projectPrefix = ""
-resourceOwner = ""
+# Project naming convention needs to be lower case and dashes "-"
+# Ex: projectPrefix = "my-project-demo"
+projectPrefix       = ""
+
+# Azure Resource Group tag information
+resourceOwner       = ""
 
 # main.tf Azure Service Principal Information
 # --Retreive from Azure Portal or CLI--
 # --Recommend using the Contributor role for the Service Principal--
 # CLI Example: az ad sp create-for-rbac --name <name> --role Contributor --scopes /subscriptions/<your Azure subscription ID>
 
-client_id       = ""
-client_secret   = ""
-tenant_id       = ""
-subscription_id = ""
+client_id           = ""
+client_secret       = ""
+tenant_id           = ""
+subscription_id     = ""
 
 # Key Vault - Uncomment appropriate bool value to enable / disable Key Vault integration
-# false = disable (do not use Azure Keyvault)
+# false = disable (do not use Azure Keyvault). This is default and will use the f5_password variable for BIG-IP password
 # true = enable (use Azure Keyvault)
 
-#az_keyvault_authentication = true
 az_keyvault_authentication = false
 keyvault_rg                = ""
 keyvault_name              = ""

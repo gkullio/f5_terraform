@@ -9,6 +9,28 @@
 
 # Variables
 
+variable "adminSrcAddr" {
+  type        = string
+  description = "Allowed Admin source IP prefix"
+  #Recommend using icanhazip.com to get your public IP address
+  #Recommend against 0.0.0.0/0 for security reasons  
+}
+variable "vnet_cidr" {
+  type        = string
+  description = "CIDR IP Address range of the Virtual Network"
+}
+variable "mgmt_address_prefix" {
+  type        = string
+  description = "Management subnet address prefix"
+}
+variable "ext_address_prefix" {
+  type        = string
+  description = "External subnet address prefix"
+}
+variable "int_address_prefix" {
+  type        = string
+  description = "Internal subnet address prefix"
+}
 variable "projectPrefix" {
   type        = string
   description = "This value is inserted at the beginning of each Azure object (alpha-numeric, no special character)"
@@ -17,41 +39,9 @@ variable "location" {
   type        = string
   description = "Azure Location of the deployment"
 }
-variable "vnet_rg" {
-  type        = string
-  description = "Resource group name for existing VNET"
-}
-variable "vnet_name" {
-  type        = string
-  description = "Name of existing VNET"
-}
 variable "availability_zone" {
   type        = number
   description = "Azure Availability Zone for BIG-IP 1"
-}
-variable "mgmtSubnet" {
-  type        = string
-  description = "Name of management subnet"
-}
-variable "extSubnet" {
-  type        = string
-  description = "Name of external subnet"
-}
-variable "intSubnet" {
-  type        = string
-  description = "Name of internal subnet"
-}
-variable "mgmtNsg" {
-  type        = string
-  description = "Name of management network security group"
-}
-variable "extNsg" {
-  type        = string
-  description = "Name of external network security group"
-}
-variable "intNsg" {
-  type        = string
-  description = "Name of internal network security group"
 }
 variable "client_secret" {
   type        = string
