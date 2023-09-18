@@ -8,5 +8,5 @@ provider "google" {
 
 # Create a random id
 resource "random_id" "buildSuffix" {
-  byte_length = 2
+  byte_length = 1
 }
