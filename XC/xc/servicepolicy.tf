@@ -116,6 +116,4 @@ resource "volterra_service_policy" "policy" {
       }
     }
   }
-
-
 }
