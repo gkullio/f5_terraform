@@ -42,7 +42,7 @@ locals {
 # Setup Onboarding scripts
 locals {
   f5_onboard1 = templatefile("${path.module}/f5_onboard.tmpl", {
-    regKey                     = var.license1
+    #regKey                     = var.license1
     f5_username                = var.f5_username
     f5_password                = var.az_keyvault_authentication ? "" : var.f5_password
     az_keyvault_authentication = var.az_keyvault_authentication
@@ -79,7 +79,7 @@ locals {
     remote_selfip_ext = module.bigip2.private_addresses["public_private"]["private_ip"][0]
   })
   f5_onboard2 = templatefile("${path.module}/f5_onboard.tmpl", {
-    regKey                     = var.license2
+    #regKey                     = var.license2
     f5_username                = var.f5_username
     f5_password                = var.az_keyvault_authentication ? "" : var.f5_password
     az_keyvault_authentication = var.az_keyvault_authentication
