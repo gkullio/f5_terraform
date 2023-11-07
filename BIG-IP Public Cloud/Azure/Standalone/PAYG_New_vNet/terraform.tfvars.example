@@ -36,6 +36,9 @@ int_address_prefix  = "10.245.3.0/24"
 
 
 # Azure Environment
+# The Project Prefix should only contain lowercase aplhanumeric characters, number and hyphens. 
+# It must start with a letter, end only with a number or letter and not exceed 63 characters in length
+# Resournce owner will be a tag and should be your email. This is used to tag resources for billing purposes.
 
 location      = "westus2"
 projectPrefix = ""
@@ -44,7 +47,7 @@ resourceOwner = ""
 # main.tf Azure Service Principal Information
 # --Retreive from Azure Portal or CLI--
 # --Recommend using the Contributor role for the Service Principal--
-# CLI Example: az ad sp create-for-rbac --name <name> --role Contributor --scopes /subscriptions/<your Azure subscription ID>
+# Azure CLI Example: az ad sp create-for-rbac --name <name> --role Contributor --scopes /subscriptions/<your Azure subscription ID>
 
 client_id       = ""
 client_secret   = ""
