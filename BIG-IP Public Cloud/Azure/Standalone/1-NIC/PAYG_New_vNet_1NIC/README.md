@@ -1,4 +1,5 @@
-# Deploying BIG-IP VE in Azure - Standalone: 3-NIC
+# Deploying BIG-IP VE in Azure - Standalone: 1-NIC
+# CURRENT WORK IN PROGRESS - 12/11/2023
 
 ## To Do
 - Community support only. Template is not F5 supported.
