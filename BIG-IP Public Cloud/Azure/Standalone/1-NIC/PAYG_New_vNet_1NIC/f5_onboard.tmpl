@@ -120,8 +120,8 @@ extension_services:
             hostname: '{{{ HOST_NAME }}}.${dns_suffix}'
           myPasswordPolicy:
             class: PasswordPolicy
-            policyEnforcementEnabled: false            
-          '{{{ USER_NAME }}}':
+            policyEnforcementEnabled: false
+         '{{{ USER_NAME }}}':
             class: User
             partitionAccess:
               all-partitions:

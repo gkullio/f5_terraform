@@ -12,7 +12,7 @@ AS3_URL             = "https://github.com/F5Networks/f5-appsvcs-extension/releas
 TS_URL              = "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.32.0/f5-telemetry-1.32.0-2.noarch.rpm"
 FAST_URL            = "https://github.com/F5Networks/f5-appsvcs-templates/releases/download/v1.24.0/f5-appsvcs-templates-1.24.0-1.noarch.rpm"
 INIT_URL            = "https://cdn.f5.com/product/cloudsolutions/f5-bigip-runtime-init/v1.6.0/dist/f5-bigip-runtime-init-1.6.0-1.gz.run"
-vm_name             = "kulland-ipsec-vm"
+vm_name             = "kulland-bigip1"
 
 # BIG-IP Image Information
 # --Currently used PAYG image--
