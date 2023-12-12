@@ -86,7 +86,6 @@ pre_onboard_enabled:
     type: inline
     commands:
       - /usr/bin/setdb provision.extramb 1024
-      - /usr/bin/setdb restjavad.useextramb true
       - /usr/bin/setdb setup.run false
 extension_packages:
   install_operations:
@@ -197,7 +196,6 @@ post_onboard_enabled:
     type: inline
     commands:
       - tmsh save sys config
-      - tmsh load sys config
 EOF
 
 # Download BIG-IP Runtime Init

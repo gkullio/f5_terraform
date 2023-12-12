@@ -28,7 +28,7 @@ bigip_version       = "17.1.100002"
 #int_address_prefix  = "10.245.3.0/24"
 
 # new vNet information
-adminSrcAddr        = "98.247.105.105"
+adminSrcAddr        = "104.219.105.84"
 vnet_cidr           = "172.10.0.0/16"
 mgmt_address_prefix = "172.10.1.0/24"
 ext_address_prefix  = "172.10.2.0/24"
