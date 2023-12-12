@@ -24,15 +24,13 @@ INIT_URL            = "https://cdn.f5.com/product/cloudsolutions/f5-bigip-runtim
 # --Currently used PAYG image--
 product             = "f5-big-ip-best"
 image_name          = "f5-big-best-plus-hourly-25mbps"
-bigip_version       = "16.1.303000"
+bigip_version       = "17.1.100002"
 
 # new vNet information
 # Restrict Admin Access Source address to your IP address
 adminSrcAddr        = ""
 vnet_cidr           = "10.245.0.0/16"
 mgmt_address_prefix = "10.245.1.0/24"
-ext_address_prefix  = "10.245.2.0/24"
-int_address_prefix  = "10.245.3.0/24"
 
 
 # Azure Environment
@@ -40,9 +38,10 @@ int_address_prefix  = "10.245.3.0/24"
 # It must start with a letter, end only with a number or letter and not exceed 63 characters in length
 # Resournce owner will be a tag and should be your email. This is used to tag resources for billing purposes.
 
-location      = "westus2"
-projectPrefix = ""
-resourceOwner = ""
+location           = "westus2"
+projectPrefix      = ""
+resourceOwner      = ""
+resourceOwnerEmail = ""
 
 # main.tf Azure Service Principal Information
 # --Retreive from Azure Portal or CLI--
