@@ -1,0 +1,73 @@
+#This is the examples for the terraform.tfvars file
+#In order to use this file, you must rename it to terraform.tfvars
+#All variables should be filled out appropriately for your environment
+
+# BIG-IP Environment
+f5_username         = "azureuser"
+f5_password         = "DefaultPW12!@"
+ssh_key             = "~/.ssh/id_rsa.pub"
+libs_dir            = "/config/cloud/azure/node_modules"
+dns_suffix          = "bigip.demo"
+dns_server          = "8.8.8.8"
+availability_zone   = 1
+ntp_server          = "0.us.pool.ntp.org"
+vm_name             = "bigip.demo.azure.local"
+DO_URL              = "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.39.0/f5-declarative-onboarding-1.39.0-4.noarch.rpm"
+AS3_URL             = "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.46.0/f5-appsvcs-3.46.0-5.noarch.rpm"
+TS_URL              = "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.32.0/f5-telemetry-1.32.0-2.noarch.rpm"
+FAST_URL            = "https://github.com/F5Networks/f5-appsvcs-templates/releases/download/v1.24.0/f5-appsvcs-templates-1.24.0-1.noarch.rpm"
+INIT_URL            = "https://cdn.f5.com/product/cloudsolutions/f5-bigip-runtime-init/v1.6.0/dist/f5-bigip-runtime-init-1.6.0-1.gz.run"
+
+# BIG-IP Image Information
+# --Currently used PAYG image--
+product             = "f5-big-ip-byol"
+image_name          = "f5-big-all-2slot-byol"
+bigip_version       = "16.1.303000"
+
+# BIG-IP License Information
+# --Retreive from Eval Key Generator--
+license1            = "value"
+
+# Existing vNet information
+# Recommended to use a dedicated vNet for BIG-IP Networking
+# Please use the Infrastucture-only template to create the vNet and subnets
+vnet_rg             = ""
+vnet_name           = ""
+
+# Existing Network Security Groups for each subnet
+
+mgmtNsg             = ""
+extNsg              = ""
+intNsg              = ""
+
+# Existing Subnet names
+
+mgmtSubnet          = "mgmt"
+extSubnet           = "external"
+intSubnet           = "internal"
+
+# Azure Environment
+
+location      = "westus2"
+projectPrefix = ""
+resourceOwner = ""
+
+# main.tf Azure Service Principal Information
+# --Retreive from Azure Portal or CLI--
+# --Recommend using the Contributor role for the Service Principal--
+# CLI Example: az ad sp create-for-rbac --name <name> --role Contributor --scopes /subscriptions/<your Azure subscription ID>
+
+client_id       = ""
+client_secret   = ""
+tenant_id       = ""
+subscription_id = ""
+
+# Key Vault - Uncomment appropriate bool value to enable / disable Key Vault integration
+# false = disable (do not use Azure Keyvault)
+# true = enable (use Azure Keyvault)
+
+az_keyvault_authentication = false
+keyvault_rg                = ""
+keyvault_name              = ""
+user_identity              = "/subscriptions/<subscription_ID>/resourceGroups/<your keyvault RG>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<your managed identity name>"
+keyvault_secret            = ""
