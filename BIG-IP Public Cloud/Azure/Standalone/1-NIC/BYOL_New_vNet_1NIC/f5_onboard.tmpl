@@ -51,38 +51,6 @@ fi
 
 # Add remaining runtime_parameters
 cat << 'EOF' >> /config/cloud/runtime-init-conf.yaml
-  - name: GATEWAY_EXTERNAL
-    type: metadata
-    metadataProvider:
-      environment: azure
-      type: network
-      field: ipv4
-      index: 1
-      ipcalc: first
-  - name: GATEWAY_INTERNAL
-    type: metadata
-    metadataProvider:
-      environment: azure
-      type: network
-      field: ipv4
-      index: 2
-      ipcalc: first
-  - name: SELF_IP_EXTERNAL
-    type: metadata
-    metadataProvider:
-      environment: azure
-      type: network
-      field: ipv4
-      index: 1
-      ipcalc: address
-  - name: SELF_IP_INTERNAL
-    type: metadata
-    metadataProvider:
-      environment: azure
-      type: network
-      field: ipv4
-      index: 2
-      ipcalc: address
   - name: DNS_SERVER
     type: static
     value: ${dns_server}
@@ -118,7 +86,6 @@ pre_onboard_enabled:
     type: inline
     commands:
       - /usr/bin/setdb provision.extramb 1024
-      - /usr/bin/setdb restjavad.useextramb true
       - /usr/bin/setdb setup.run false
 extension_packages:
   install_operations:
@@ -141,20 +108,32 @@ extension_services:
           class: Tenant
           dbVars:
             class: DbVariables
-            restjavad.useextramb: true
             provision.extramb: 1024
             config.allow.rfc3927: enable
             ui.advisory.enabled: true
-            ui.advisory.color: blue
-            ui.advisory.text: '{{{ HOST_NAME }}}.${dns_suffix}'
-          myLicense:
-            class: License
-            licenseType: regKey
-            regKey: '${regKey}'
+            ui.advisory.color: green
+            ui.advisory.text: 'This Banner can be Customized to your liking'
           mySystem:
             autoPhonehome: true
             class: System
             hostname: '{{{ HOST_NAME }}}.${dns_suffix}'
+          myLicense:
+            class: License
+            licenseType: regKey
+            regKey: '${regKey}'
+          myPasswordPolicy:
+            class: PasswordPolicy
+            policyEnforcementEnabled: false
+          gage:
+            class: User
+            partitionAccess:
+              all-partitions:
+                role: admin
+            password: '{{{ ADMIN_PASS }}}'
+            shell: bash
+            userType: regular
+            keys:
+              - '{{{ SSH_KEYS }}}'  
           '{{{ USER_NAME }}}':
             class: User
             partitionAccess:
@@ -164,51 +143,7 @@ extension_services:
             shell: bash
             userType: regular
             keys:
-              - '{{{ SSH_KEYS }}}'   
-          httpd:
-            class: HTTPD
-            maxClients: 10
-            authPamIdleTimeout: 900
-            sslCiphersuite:
-            - ECDHE-ECDSA-AES256-GCM-SHA384
-            - ECDHE-ECDSA-AES256-SHA384
-            - ECDHE-ECDSA-AES256-SHA
-            - ECDH-ECDSA-AES256-GCM-SHA384
-            - ECDH-ECDSA-AES256-SHA384
-            - ECDH-ECDSA-AES256-SHA
-            - AES256-GCM-SHA384
-            - AES256-SHA256
-            - AES256-SHA
-            - CAMELLIA256-SHA
-            - ECDHE-RSA-AES128-GCM-SHA256
-            - ECDHE-ECDSA-AES128-GCM-SHA256
-            - ECDHE-ECDSA-AES128-SHA256
-            - ECDHE-RSA-AES128-SHA
-            - ECDHE-ECDSA-AES128-SHA
-            - ECDH-ECDSA-AES128-GCM-SHA256
-            - ECDH-ECDSA-AES128-SHA256
-            - ECDH-ECDSA-AES128-SHA
-            - AES128-GCM-SHA256
-            - AES128-SHA256
-            - AES128-SHA
-            - SEED-SHA
-            - CAMELLIA128-SHA
-            sslProtocol: all -SSLv2 -SSLv3 -TLSv1
-          sshd:
-            class: SSHD
-            banner: 'Welcome to the thunderdome.  Also this is a demo for the Azure deployment of F5 BIG-IP.'
-            inactivityTimeout: 900
-            ciphers:
-            - aes128-ctr
-            - aes192-ctr
-            - aes256-ctr
-            loginGraceTime: 60
-            MACS:
-            - hmac-sha1
-            - hmac-ripemd160
-            maxAuthTries: 3
-            maxStartups: '5'
-            protocol: 2          
+              - '{{{ SSH_KEYS }}}'
           myDns:
             class: DNS
             nameServers:
@@ -228,72 +163,7 @@ extension_services:
             ltm: nominal
             asm: nominal
             avr: nominal
-          external:
-            class: VLAN
-            tag: 4094
-            mtu: 1500
-            interfaces:
-              - name: 1.1
-                tagged: false
-          external-localself:
-            class: SelfIp
-            address: '{{{ SELF_IP_EXTERNAL }}}/24'
-            vlan: external
-            allowService: default
-            trafficGroup: traffic-group-local-only
-          internal:
-            class: VLAN
-            tag: 4093
-            mtu: 1500
-            interfaces:
-              - name: 1.2
-                tagged: false
-          internal-localself:
-            class: SelfIp
-            address: '{{{ SELF_IP_INTERNAL }}}/24'
-            vlan: internal
-            allowService: default
-            trafficGroup: traffic-group-local-only
-          default:
-            class: Route
-            gw: '{{{ GATEWAY_EXTERNAL }}}'
-            network: default
-            mtu: 1500
-    - extensionType: as3
-      type: inline
-      value:
-        class: AS3
-        action: deploy
-        persist: true
-        declaration:
-          class: ADC
-          schemaVersion: 3.0.0
-          label: Sample 1
-          remark: A HTTP sample application
-          Applications:
-            class: Tenant
-            httpbin_app:
-              class: Application
-              template: http
-              serviceMain:
-                class: Service_HTTP
-                virtualAddresses:
-                  - '${secondaryIP}'
-                pool: web_pool
-              web_pool:
-                class: Pool
-                monitors:
-                  - tcp
-                members:
-                  - servicePort: 80
-                    addressDiscovery: fqdn
-                    autoPopulate: true
-                    hostname: httpbin.org
-post_onboard_enabled:
-  - name: misc
-    type: inline
-    commands:
-    - tmsh save sys config
+post_onboard_enabled: []
 EOF
 
 # Download BIG-IP Runtime Init

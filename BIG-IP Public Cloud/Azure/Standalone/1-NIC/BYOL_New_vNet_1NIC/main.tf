@@ -20,6 +20,7 @@ resource "azurerm_resource_group" "main" {
   location = var.location
   tags = {
     owner = var.resourceOwner
+    email = var.resourceOwnerEmail
   }
 }
 
@@ -32,6 +33,7 @@ resource "azurerm_log_analytics_workspace" "main" {
   location            = azurerm_resource_group.main.location
   tags = {
     owner = var.resourceOwner
+    email = var.resourceOwnerEmail
   }
 }
 

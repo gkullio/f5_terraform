@@ -23,14 +23,6 @@ variable "mgmt_address_prefix" {
   type        = string
   description = "Management subnet address prefix"
 }
-variable "ext_address_prefix" {
-  type        = string
-  description = "External subnet address prefix"
-}
-variable "int_address_prefix" {
-  type        = string
-  description = "Internal subnet address prefix"
-}
 variable "projectPrefix" {
   type        = string
   description = "This value is inserted at the beginning of each Azure object (alpha-numeric, no special character)"
@@ -153,55 +145,15 @@ variable "libs_dir" {
   type        = string
   description = "Directory on the BIG-IP to download the A&O Toolchain into"
 }
-variable "bigIqHost" {
-  type        = string
-  default     = ""
-  description = "This is the BIG-IQ License Manager host name or IP address"
-}
-variable "bigIqUsername" {
-  type        = string
-  default     = "azureuser"
-  description = "Admin name for BIG-IQ"
-}
-variable "bigIqPassword" {
-  type        = string
-  default     = "Default12345!"
-  description = "Admin Password for BIG-IQ"
-}
-variable "bigIqLicenseType" {
-  type        = string
-  default     = "licensePool"
-  description = "BIG-IQ license type"
-}
-variable "bigIqLicensePool" {
-  type        = string
-  default     = ""
-  description = "BIG-IQ license pool name"
-}
-variable "bigIqSkuKeyword1" {
-  type        = string
-  default     = "key1"
-  description = "BIG-IQ license SKU keyword 1"
-}
-variable "bigIqSkuKeyword2" {
-  type        = string
-  default     = "key2"
-  description = "BIG-IQ license SKU keyword 2"
-}
-variable "bigIqUnitOfMeasure" {
-  type        = string
-  default     = "hourly"
-  description = "BIG-IQ license unit of measure"
-}
-variable "bigIqHypervisor" {
-  type        = string
-  default     = "azure"
-  description = "BIG-IQ hypervisor"
-}
 variable "resourceOwner" {
   type        = string
   default     = null
   description = "This is a tag used for object creation. Example is last name."
+}
+variable "resourceOwnerEmail" {
+  type        = string
+  default     = null
+  description = "This is a tag used for object creation. Example is email address."  
 }
 variable "vm_name" {
   description = "Name of 1st BIG-IP. If empty, default is 'bigip1' string + prefix + random_id"

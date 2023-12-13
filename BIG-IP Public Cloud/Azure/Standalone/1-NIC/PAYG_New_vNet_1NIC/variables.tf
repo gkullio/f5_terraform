@@ -8,6 +8,7 @@
 #### End of NOTE ####
 
 # Variables
+
 variable "adminSrcAddr" {
   type        = string
   description = "Allowed Admin source IP prefix"
@@ -21,14 +22,6 @@ variable "vnet_cidr" {
 variable "mgmt_address_prefix" {
   type        = string
   description = "Management subnet address prefix"
-}
-variable "ext_address_prefix" {
-  type        = string
-  description = "External subnet address prefix"
-}
-variable "int_address_prefix" {
-  type        = string
-  description = "Internal subnet address prefix"
 }
 variable "projectPrefix" {
   type        = string

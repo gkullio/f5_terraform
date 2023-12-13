@@ -57,7 +57,7 @@ resource "azurerm_network_security_group" "mgmt" {
     destination_address_prefix = "*"
   }
 
-    security_rule {
+  security_rule {
     name                       = "allow_HTTPS_8443"
     description                = "Allow HTTPS 8443 access"
     priority                   = 130
@@ -88,7 +88,6 @@ resource "azurerm_network_security_group" "mgmt" {
     email = var.resourceOwnerEmail
   }
 }
-
 
 
 # Associate network security groups with subnets

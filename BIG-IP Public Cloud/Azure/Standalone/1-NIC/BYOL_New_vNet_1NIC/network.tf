@@ -10,6 +10,7 @@ resource "azurerm_virtual_network" "main" {
   location            = azurerm_resource_group.main.location
   tags = {
     owner = var.resourceOwner
+    email = var.resourceOwnerEmail    
   }
 }
 
@@ -21,21 +22,6 @@ resource "azurerm_subnet" "mgmt" {
   address_prefixes     = [var.mgmt_address_prefix]
 }
 
-# Create External Subnet
-resource "azurerm_subnet" "external" {
-  name                 = "external"
-  virtual_network_name = azurerm_virtual_network.main.name
-  resource_group_name  = azurerm_resource_group.main.name
-  address_prefixes     = [var.ext_address_prefix]
-}
-
-# Create Internal Subnet
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
-  virtual_network_name = azurerm_virtual_network.main.name
-  resource_group_name  = azurerm_resource_group.main.name
-  address_prefixes     = [var.int_address_prefix]
-}
 
 ############################ Security Groups ############################
 
@@ -72,9 +58,22 @@ resource "azurerm_network_security_group" "mgmt" {
   }
 
   security_rule {
+    name                       = "allow_HTTPS_8443"
+    description                = "Allow HTTPS 8443 access"
+    priority                   = 130
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8443"
+    source_address_prefix      = var.adminSrcAddr
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
     name                       = "allow_APP_HTTPS"
     description                = "Allow HTTPS access"
-    priority                   = 130
+    priority                   = 140
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
@@ -86,67 +85,13 @@ resource "azurerm_network_security_group" "mgmt" {
 
   tags = {
     owner = var.resourceOwner
+    email = var.resourceOwnerEmail
   }
 }
 
-resource "azurerm_network_security_group" "external" {
-  name                = format("%s-ext-nsg-%s", var.projectPrefix, random_id.buildSuffix.hex)
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-
-  security_rule {
-    name                       = "allow_HTTP"
-    description                = "Allow HTTP access"
-    priority                   = 110
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "allow_HTTPS"
-    description                = "Allow HTTPS access"
-    priority                   = 120
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  tags = {
-    owner = var.resourceOwner
-  }
-}
-
-resource "azurerm_network_security_group" "internal" {
-  name                = format("%s-int-nsg-%s", var.projectPrefix, random_id.buildSuffix.hex)
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
-
-  tags = {
-    owner = var.resourceOwner
-  }
-}
 
 # Associate network security groups with subnets
 resource "azurerm_subnet_network_security_group_association" "mgmt" {
   subnet_id                 = azurerm_subnet.mgmt.id
   network_security_group_id = azurerm_network_security_group.mgmt.id
-}
-
-resource "azurerm_subnet_network_security_group_association" "external" {
-  subnet_id                 = azurerm_subnet.external.id
-  network_security_group_id = azurerm_network_security_group.external.id
-}
-
-resource "azurerm_subnet_network_security_group_association" "internal" {
-  subnet_id                 = azurerm_subnet.internal.id
-  network_security_group_id = azurerm_network_security_group.internal.id
 }
