@@ -108,7 +108,6 @@ extension_services:
           class: Tenant
           dbVars:
             class: DbVariables
-            restjavad.useextramb: true
             provision.extramb: 1024
             config.allow.rfc3927: enable
             ui.advisory.enabled: true
@@ -121,7 +120,17 @@ extension_services:
           myPasswordPolicy:
             class: PasswordPolicy
             policyEnforcementEnabled: false
-         '{{{ USER_NAME }}}':
+          gage:
+            class: User
+            partitionAccess:
+              all-partitions:
+                role: admin
+            password: '{{{ ADMIN_PASS }}}'
+            shell: bash
+            userType: regular
+            keys:
+              - '{{{ SSH_KEYS }}}'  
+          '{{{ USER_NAME }}}':
             class: User
             partitionAccess:
               all-partitions:
@@ -131,50 +140,6 @@ extension_services:
             userType: regular
             keys:
               - '{{{ SSH_KEYS }}}'
-          httpd:
-            class: HTTPD
-            maxClients: 10
-            authPamIdleTimeout: 900
-            sslCiphersuite:
-            - ECDHE-ECDSA-AES256-GCM-SHA384
-            - ECDHE-ECDSA-AES256-SHA384
-            - ECDHE-ECDSA-AES256-SHA
-            - ECDH-ECDSA-AES256-GCM-SHA384
-            - ECDH-ECDSA-AES256-SHA384
-            - ECDH-ECDSA-AES256-SHA
-            - AES256-GCM-SHA384
-            - AES256-SHA256
-            - AES256-SHA
-            - CAMELLIA256-SHA
-            - ECDHE-RSA-AES128-GCM-SHA256
-            - ECDHE-ECDSA-AES128-GCM-SHA256
-            - ECDHE-ECDSA-AES128-SHA256
-            - ECDHE-RSA-AES128-SHA
-            - ECDHE-ECDSA-AES128-SHA
-            - ECDH-ECDSA-AES128-GCM-SHA256
-            - ECDH-ECDSA-AES128-SHA256
-            - ECDH-ECDSA-AES128-SHA
-            - AES128-GCM-SHA256
-            - AES128-SHA256
-            - AES128-SHA
-            - SEED-SHA
-            - CAMELLIA128-SHA
-            sslProtocol: all -SSLv2 -SSLv3 -TLSv1
-          sshd:
-            class: SSHD
-            banner: 'Welcome to the thunderdome.  Also this is a demo for the Azure deployment of F5 BIG-IP.'
-            inactivityTimeout: 900
-            ciphers:
-            - aes128-ctr
-            - aes192-ctr
-            - aes256-ctr
-            loginGraceTime: 60
-            MACS:
-            - hmac-sha1
-            - hmac-ripemd160
-            maxAuthTries: 3
-            maxStartups: '5'
-            protocol: 2         
           myDns:
             class: DNS
             nameServers:
@@ -194,11 +159,7 @@ extension_services:
             ltm: nominal
             asm: nominal
             avr: nominal
-post_onboard_enabled:
-  - name: misc
-    type: inline
-    commands:
-      - tmsh save sys config
+post_onboard_enabled: []
 EOF
 
 # Download BIG-IP Runtime Init
