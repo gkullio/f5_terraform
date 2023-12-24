@@ -15,7 +15,7 @@ locals {
       ip = element(flatten(module.bigip.private_addresses["public_private"]["private_ips"][0]), 2)
     }
     3 = {
-      ip = element(flatted(module.bigip.private_addresses["public_private"]["private_ips"][0]), 3)
+      ip = element(flatten(module.bigip.private_addresses["public_private"]["private_ips"][0]), 3)
     }
   }
   # Determine BIG-IP secondary IPs to be used for VIP
