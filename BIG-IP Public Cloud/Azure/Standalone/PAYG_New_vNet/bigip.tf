@@ -11,11 +11,20 @@ locals {
     1 = {
       ip = element(flatten(module.bigip.private_addresses["public_private"]["private_ips"][0]), 1)
     }
+    2 = {
+      ip = element(flatten(module.bigip.private_addresses["public_private"]["private_ips"][0]), 2)
+    }
+    3 = {
+      ip = element(flatted(module.bigip.private_addresses["public_private"]["private_ips"][0]), 3)
+    }
   }
   # Determine BIG-IP secondary IPs to be used for VIP
   vm01_vip_ips = {
     app1 = {
       ip = module.bigip.private_addresses["public_private"]["private_ip"][0] != local.vm01_ext_ips.0.ip ? local.vm01_ext_ips.0.ip : local.vm01_ext_ips.1.ip
+    }
+    app2 = {
+      ip = module.bigip.private_addresses["public_private"]["private_ip"][0] != local.vm01_ext_ips.1.ip ? local.vm01_ext_ips.1.ip : local.vm01_ext_ips.2.ip
     }
   }
   # Custom tags
@@ -60,6 +69,7 @@ locals {
     bigIqUnitOfMeasure         = var.bigIqUnitOfMeasure
     bigIqHypervisor            = var.bigIqHypervisor
     secondaryIP                = local.vm01_vip_ips.app1.ip
+    secondaryIP_2              = local.vm01_vip_ips.app2.ip
   })
 }
 
