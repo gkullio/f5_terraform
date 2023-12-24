@@ -24,7 +24,7 @@ locals {
       ip = module.bigip.private_addresses["public_private"]["private_ip"][0] != local.vm01_ext_ips.0.ip ? local.vm01_ext_ips.0.ip : local.vm01_ext_ips.1.ip
     }
     app2 = {
-      ip = module.bigip.private_addresses["public_private"]["private_ip"][0] != local.vm01_ext_ips.1.ip ? local.vm01_ext_ips.1.ip : local.vm01_ext_ips.2.ip
+      ip = module.bigip.private_addresses["public_private"]["private_ip"][0] != local.vm01_ext_ips.2.ip ? local.vm01_ext_ips.2.ip : local.vm01_ext_ips.3.ip
     }
   }
   # Custom tags
