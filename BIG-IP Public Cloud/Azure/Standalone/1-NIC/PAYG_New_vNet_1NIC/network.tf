@@ -40,7 +40,7 @@ resource "azurerm_network_security_group" "mgmt" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = var.adminSrcAddr
+    source_address_prefixes    = var.adminSrcAddr
     destination_address_prefix = "*"
   }
 
@@ -53,33 +53,46 @@ resource "azurerm_network_security_group" "mgmt" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "443"
-    source_address_prefix      = var.adminSrcAddr
+    source_address_prefixes    = var.adminSrcAddr
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "allow_APP_HTTP"
+    description                = "Allow HTTP access"
+    priority                   = 130
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "80"
+    source_address_prefixes    = var.adminSrcAddr
     destination_address_prefix = "*"
   }
 
   security_rule {
     name                       = "allow_HTTPS_8443"
     description                = "Allow HTTPS 8443 access"
-    priority                   = 130
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "8443"
-    source_address_prefix      = var.adminSrcAddr
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
-    name                       = "allow_APP_HTTPS"
-    description                = "Allow HTTPS access"
     priority                   = 140
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "8443"
-    source_address_prefix      = var.adminSrcAddr
+    source_address_prefixes    = var.adminSrcAddr
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "allow_APP_HTTPS"
+    description                = "Allow HTTPS access"
+    priority                   = 150
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8443"
+    source_address_prefixes    = var.adminSrcAddr
     destination_address_prefix = "*"
   }
 
