@@ -22,9 +22,10 @@ INIT_URL            = "https://cdn.f5.com/product/cloudsolutions/f5-bigip-runtim
 
 # BIG-IP Image Information
 # --Currently used PAYG image--
+# az vm image list --offer BIG-IP --sku f5-big-best-plus-hourly- --all --query "sort_by([].{offer:offer, sku:sku, version:version}, &version)" --output table
 product             = "f5-big-ip-best"
 image_name          = "f5-big-best-plus-hourly-25mbps"
-bigip_version       = "16.1.303000"
+bigip_version       = "17.1.100002"
 
 # new vNet information
 # Restrict Admin Access Source address to your IP address
