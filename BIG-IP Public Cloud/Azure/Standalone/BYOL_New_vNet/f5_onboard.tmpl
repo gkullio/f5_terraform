@@ -118,7 +118,6 @@ pre_onboard_enabled:
     type: inline
     commands:
       - /usr/bin/setdb provision.extramb 1024
-      - /usr/bin/setdb restjavad.useextramb true
       - /usr/bin/setdb setup.run false
 extension_packages:
   install_operations:
@@ -141,7 +140,6 @@ extension_services:
           class: Tenant
           dbVars:
             class: DbVariables
-            restjavad.useextramb: true
             provision.extramb: 1024
             config.allow.rfc3927: enable
             ui.advisory.enabled: true
