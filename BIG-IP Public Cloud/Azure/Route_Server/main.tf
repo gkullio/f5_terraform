@@ -168,7 +168,7 @@ module "nsg-internal" {
 
 # Create VNets
 module "network" {
-  for_each            = local.vnets
+  use_for_each            = local.vnets
   source              = "Azure/vnet/azurerm"
   resource_group_name = azurerm_resource_group.rg[each.key].name
   vnet_name           = format("%s-vnet-%s-%s", var.projectPrefix, each.key, random_id.buildSuffix.hex)
