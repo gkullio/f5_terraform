@@ -10,8 +10,9 @@ locals {
     }
     1 = {
       ip = element(flatten(module.bigip.private_addresses["public_private"]["private_ips"][0]), 1)
-    }
+    }   
   }
+
   # Determine BIG-IP secondary IPs to be used for VIP
   vm01_vip_ips = {
     app1 = {
@@ -51,7 +52,6 @@ locals {
     law_id                     = azurerm_log_analytics_workspace.main.workspace_id
     law_primkey                = azurerm_log_analytics_workspace.main.primary_shared_key
     secondaryIP                = local.vm01_vip_ips.app1.ip
-    secondaryIP_2              = local.vm01_vip_ips.app2.ip
   })
 }
 

@@ -88,3 +88,12 @@ output "public_vip_url" {
   description = "public URL for application"
   value       = "http://${module.bigip.public_addresses["external_secondary_public"][0]}"
 }
+
+#additional outputs to help me ID what is happending
+output "gagesoutput" {
+  value = azurerm_subnet.mgmt.id
+}
+output "ipoutput1" {
+  value = module.bigip.private_addresses["public_private"]["private_ip"][0]
+}
+
