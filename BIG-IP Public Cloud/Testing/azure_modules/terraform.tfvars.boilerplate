@@ -1,0 +1,91 @@
+# Azure Credentials
+# For the providers.tf in the root 
+# Azure Service Principal Information
+# --Retreive from Azure Portal or CLI--
+# --Recommend using the Contributor role for the Service Principal--
+# Azure CLI Example: az ad sp create-for-rbac --name <name> --role Contributor --scopes /subscriptions/<your Azure subscription ID>
+client_id       = ""
+client_secret   = ""
+tenant_id       = ""
+subscription_id = ""
+
+# Global Variables
+# Resource group information for the deployment of the BIG-IP VE and Ubuntu VM
+# Use your business email or name for the resourceOwner to track / audit your deployment in Azure
+# Instance type is shared between the BIG-IP VE and Ubuntu VM.
+# https://clouddocs.f5.com/cloud/public/v1/matrix.html#microsoft-azure
+# ***Recommended*** to use Standard_DS4_v2 for the BIG-IP VE and Ubuntu VM
+rg_name         = ""
+resourceOwner   = ""
+location        = ""
+instance_size   = "Standard_DS4_v2"
+
+
+####### Module azure_vnet #######
+
+# Virtual Network information for the deployment of the BIG-IP VE and Ubuntu VM
+# This current address space is directly linked to the ubuntu apps that are built within the ubuntu module.
+# Not recommended to change this as it will break the ubuntu application.
+vnet_name           = ""
+vnet_address_space  = "10.245.0.0/16"
+mgmt_subnet_name    = "mgmt"
+mgmt_address_space  = "10.245.1.0/24"
+ext_subnet_name     = "ext"
+ext_address_space   = "10.245.2.0/24"
+int_subnet_name     = "int"
+int_address_space   = "10.245.3.0/24"
+
+####### Module BIG-IP VM #######
+
+vm_name             = "bigip-poc"
+instance_prefix     = "bigip-poc-1"
+bigip-username      = "testuser"
+bigip-password      = "T3stP@ssw0rd"
+
+####### Networking source address lists  #######
+
+# Restrict Source IP Access Source address to your IP address or range of IP addresses
+# ***Recommended*** Use an array here 
+# ["x.x.x.x/32"] for a single IP 
+# ["x.x.x.x/32", "y.y.y.y/32", "z.z.z.z"] to allow multiple IP addresses
+# Prefix should only contain lowercase aplhanumeric characters, number and hyphens. 
+# This is to easily identify the resources created by the bigip module.
+
+vpnMgmtSrcAddr      = [""]
+REtrafficSrcAddr    = [""]
+
+
+# BIG-IP VE specific variables for onboarding script
+
+bigip-hostname      = "bigip-poc"
+ssh_publickey       = "~/.ssh/id_rsa.pub"
+f5_product_name     = "f5-big-ip-best"
+f5_image_name       = "f5-big-best-plus-hourly-25mbps"
+f5_version          = "17.1.100002"
+# Please create two users.
+# ***root account is locked out by default in the BIG-IP VE*** 
+f5_username         = "user1"
+f5_username_2       = "user2"
+# Same password used for both users for the PoC
+f5_password         = "T3stP@ssw0rd"
+dns_suffix          = "pov.payg"
+dns_server          = "8.8.8.8"
+availability_zone   = 1
+ntp_server          = "0.us.pool.ntp.org"
+timezone            = "US/Pacific"
+script_name         = "f5_onboard"
+enable_ssh_key      = false
+DO_URL              = "https://github.com/F5Networks/f5-declarative-onboarding/releases/download/v1.43.0/f5-declarative-onboarding-1.43.0-5.noarch.rpm"
+AS3_URL             = "https://github.com/F5Networks/f5-appsvcs-extension/releases/download/v3.50.2/f5-appsvcs-3.50.2-3.noarch.rpm"
+TS_URL              = "https://github.com/F5Networks/f5-telemetry-streaming/releases/download/v1.35.0/f5-telemetry-1.35.0-1.noarch.rpm"
+FAST_URL            = "https://github.com/F5Networks/f5-appsvcs-templates/releases/download/v1.25.0/f5-appsvcs-templates-1.25.0-1.noarch.rpm"
+INIT_URL            = "https://github.com/F5Networks/f5-bigip-runtime-init/releases/download/2.0.1/f5-bigip-runtime-init-2.0.1-1.gz.run"
+CFE_URL             = "https://github.com/F5Networks/f5-cloud-failover-extension/releases/download/v2.1.0/f5-cloud-failover-2.1.0-0.noarch.rpm"
+
+
+
+####### Module Ubuntu #######
+
+ubuntu-hostname     = "ubuntu-poc"
+ubuntu-username     = "user1"
+ubuntu-password     = "T3stP@ssw0rd"
